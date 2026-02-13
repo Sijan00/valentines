@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Invitation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .cursive { font-family: 'Dancing Script', cursive; }
+        
+        .floating-heart {
+            position: absolute;
+            color: #f56565;
+            opacity: 0.6;
+            animation: float 6s infinite ease-in-out;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+
+        #noBtn { transition: all 0.2s ease; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div id="heart-container"></div>
+
+    <main id="main-card" class="glass-card max-w-md w-full rounded-3xl p-8 text-center z-10 animate__animated animate__fadeIn">
+        <div id="step-1">
+            <div class="mb-6 inline-block p-4 bg-red-100 rounded-full animate__animated animate__pulse animate__infinite">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </div>
+            
+            <h1 class="text-gray-500 text-sm uppercase tracking-widest mb-2">A message for my...</h1>
+            <div class="h-16 flex items-center justify-center">
+                <h2 id="nickname-display" class="cursive text-5xl text-red-600 animate__animated animate__bounceIn">Maya</h2>
+            </div>
+            
+            <p class="text-gray-600 mt-6 mb-8">I have a very important question to ask you today.</p>
+            
+            <button onclick="nextStep(2)" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-full font-semibold transition-transform hover:scale-105 shadow-lg">
+                Open My Heart
+            </button>
+            <button onclick="nextStep(4)" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-full font-semibold transition-transform hover:scale-105 shadow-lg">
+                View Memories
+            </button>
+        </div>
+        
+        <div id="step-2" class="hidden">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Will you be my Valentine? 🌹</h2>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button onclick="celebrate()" class="bg-green-500 hover:bg-green-600 text-white px-10 py-3 rounded-full font-semibold shadow-md transform transition active:scale-95">
+                    YES!
+                </button>
+                <button id="noBtn" onmouseover="moveButton()" class="bg-gray-200 text-gray-700 px-10 py-3 rounded-full font-semibold">
+                    No
+                </button>
+            </div>
+        </div>
+
+        <div id="step-3" class="hidden">
+            <div id="gift-selection">
+                <h2 class="cursive text-5xl text-red-600 mb-2 animate__animated animate__bounceIn">
+                    Awww!! 🥰🥰🥰
+                </h2>
+                <h3 class="cursive text-5xl text-red-600 mb-2 animate__animated animate__bounceIn">
+                    You're the most beautiful Valentine, <span class="text-red-500">Maya</span>... 💖🥰
+                </h3>
+                <h3 class="cursive text-5xl text-red-600 mb-2 animate__animated animate__bounceIn">I Love You Sooo Much! 💌❤️🌹</h3>
+                
+                <p class="text-gray-600 mb-6">Since you said yes, pick a mystery gift, <span id="gift-name-hint" class="font-semibold text-red-400">Baby</span>:</p>
+                
+                <div class="grid grid-cols-2 gap-6">
+                    <div onclick="openGift(1)" class="group cursor-pointer p-8 border-2 border-dashed border-red-200 rounded-3xl hover:bg-red-50 hover:border-red-400 transition-all duration-300 transform hover:scale-105">
+                        <div class="text-5xl mb-3 group-hover:animate-bounce">🎁</div>
+                        <p class="text-sm font-bold text-gray-700 tracking-wide uppercase">Gift 1</p>
+                    </div>
+                    <div onclick="openGift(2)" class="group cursor-pointer p-8 border-2 border-dashed border-red-200 rounded-3xl hover:bg-red-50 hover:border-red-400 transition-all duration-300 transform hover:scale-105">
+                        <div class="text-5xl mb-3 group-hover:animate-bounce">🎁</div>
+                        <p class="text-sm font-bold text-gray-700 tracking-wide uppercase">Gift 2</p>
+                    </div>
+                    <div onclick="openGift(3)" class="group cursor-pointer p-8 border-2 border-dashed border-red-200 rounded-3xl hover:bg-red-50 hover:border-red-400 transition-all duration-300 transform hover:scale-105">
+                        <div class="text-5xl mb-3 group-hover:animate-bounce">🎁</div>
+                        <p class="text-sm font-bold text-gray-700 tracking-wide uppercase">Gift 3</p>
+                    </div>
+                    <div onclick="openGift(4)" class="group cursor-pointer p-8 border-2 border-dashed border-red-200 rounded-3xl hover:bg-red-50 hover:border-red-400 transition-all duration-300 transform hover:scale-105">
+                        <div class="text-5xl mb-3 group-hover:animate-bounce">🎁</div>
+                        <p class="text-sm font-bold text-gray-700 tracking-wide uppercase">Gift 4</p>
+                    </div>
+                    <div onclick="openGift(5)" class="group cursor-pointer p-8 border-2 border-dashed border-red-200 rounded-3xl hover:bg-red-50 hover:border-red-400 transition-all duration-300 transform hover:scale-105">
+                        <div class="text-5xl mb-3 group-hover:animate-bounce">🎁</div>
+                        <p class="text-sm font-bold text-gray-700 tracking-wide uppercase">!! Extra !! Gift</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="gift-reveal" class="hidden animate__animated">
+                <div class="py-12">
+                    <div id="reveal-icon" class="text-8xl mb-6"></div>
+                    <h3 id="reveal-title" class="cursive text-5xl text-red-600 mb-4"></h3>
+                    <p id="reveal-description" class="text-gray-600 text-lg mb-10 italic"></p>
+                    
+                    <button onclick="backToGifts()" class="bg-white border border-red-200 text-red-500 px-6 py-2 rounded-full font-semibold flex items-center justify-center mx-auto hover:bg-red-50 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Back to other gifts
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="step-4" class="hidden">
+            <h2 class="cursive text-5xl text-red-600 mb-2 animate__animated animate__fadeInDown">Our Beautiful Memories</h2>
+            <p class="text-gray-500 mb-8 italic">Every moment with you is a treasure, Mayalu... ✨</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-h-[60vh] overflow-y-auto p-4 custom-scrollbar">
+                
+                <div class="bg-white p-3 shadow-xl transform rotate-1 hover:rotate-0 transition-all duration-300 border border-gray-100 h-full">
+                    <div class="bg-gray-50 mb-3 overflow-hidden rounded-sm flex items-center justify-center">
+                        <img src="photos/first_photo.jpg" 
+                            alt="Memory" 
+                            class="w-full h-auto max-h-[450px] object-contain shadow-inner">
+                    </div>
+                    <div class="px-2 pb-2">
+                        <h4 class="cursive text-2xl text-red-500">First Photo Together 🌹</h4>
+                        <p class="text-xs text-gray-500 mt-1">You Looked Sooo Pretty in this Newari Saree.😍😍❤️</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-3 shadow-xl transform rotate-1 hover:rotate-0 transition-all duration-300 border border-gray-100 h-full">
+                    <div class="bg-gray-50 mb-3 overflow-hidden rounded-sm flex items-center justify-center">
+                        <img src="photos/second_photo.jpg" 
+                            alt="Memory" 
+                            class="w-full h-auto max-h-[450px] object-contain shadow-inner">
+                    </div>
+                    <div class="px-2 pb-2">
+                        <h4 class="cursive text-2xl text-red-500">Us Again!! 🥰🥰</h4>
+                        <p class="text-xs text-gray-500 mt-1">Awww !! We do Look Cute Together. Right?? 🥰🥰😍😍❤️</p>
+                    </div>
+                </div>
+                <div class="bg-white p-3 shadow-xl transform rotate-1 hover:rotate-0 transition-all duration-300 border border-gray-100 h-full">
+                    <div class="bg-gray-50 mb-3 overflow-hidden rounded-sm flex items-center justify-center">
+                        <img src="photos/third_photo.png" 
+                            alt="Memory" 
+                            class="w-full h-auto max-h-[450px] object-contain shadow-inner">
+                    </div>
+                    <div class="px-2 pb-2">
+                        <h4 class="cursive text-2xl text-red-500">A wish 🥰🥰</h4>
+                        <p class="text-xs text-gray-500 mt-1">A wishful thinking. Glad we have AI these Days.🤭🥰😍❤️</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-3 shadow-xl transform -rotate-1 hover:rotate-0 transition-all duration-300 border border-gray-100 h-full">
+                    <div class="bg-black mb-3 overflow-hidden rounded-sm flex items-center justify-center relative group">
+                        <video 
+                            id="memory-video"
+                            class="w-full h-auto max-h-[450px] object-contain shadow-inner"
+                            controls
+                            playsinline
+                            preload="metadata">
+                            <source src="photos/pokhara_video.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        
+                        <div id="video-hint" class="absolute inset-0 flex items-center justify-center bg-black/20 pointer-events-none group-hover:opacity-0 transition-opacity">
+                            <span class="text-white text-4xl">▶️</span>
+                        </div>
+                    </div>
+                    <div class="px-2 pb-2 text-center">
+                        <h4 class="cursive text-2xl text-red-500">Pokhara With You 🎥</h4>
+                        <p class="text-xs text-gray-500 mt-1">Some moments are too special for just a photo. ❤️</p>
+                    </div>
+                </div>
+                <div class="bg-white p-3 shadow-xl transform rotate-1 hover:rotate-0 transition-all duration-300 border border-gray-100 h-full">
+                    <div class="bg-gray-50 mb-3 overflow-hidden rounded-sm flex items-center justify-center">
+                        <img src="photos/fourth_photo.jpg" 
+                            alt="Memory" 
+                            class="w-full h-auto max-h-[450px] object-contain shadow-inner">
+                    </div>
+                    <div class="px-2 pb-2">
+                        <h4 class="cursive text-2xl text-red-500">Pokhara Memories 🥰🥰</h4>
+                        <p class="text-xs text-gray-500 mt-1">🤭🥰😍❤️</p>
+                    </div>
+                </div>
+                <div class="bg-white p-3 shadow-xl transform rotate-1 hover:rotate-0 transition-all duration-300 border border-gray-100 h-full">
+                    <div class="bg-gray-50 mb-3 overflow-hidden rounded-sm flex items-center justify-center">
+                        <img src="photos/fifth_photo.jpg" 
+                            alt="Memory" 
+                            class="w-full h-auto max-h-[450px] object-contain shadow-inner">
+                    </div>
+                    <div class="px-2 pb-2">
+                        <h4 class="cursive text-2xl text-red-500">Pokhara Memories 🥰🥰</h4>
+                        <p class="text-xs text-gray-500 mt-1">🤭🥰😍❤️</p>
+                    </div>
+                </div>
+                <div class="bg-white p-3 shadow-xl transform rotate-1 hover:rotate-0 transition-all duration-300 border border-gray-100 h-full">
+                    <div class="bg-gray-50 mb-3 overflow-hidden rounded-sm flex items-center justify-center">
+                        <img src="photos/sixth_photo.jpg" 
+                            alt="Memory" 
+                            class="w-full h-auto max-h-[450px] object-contain shadow-inner">
+                    </div>
+                    <div class="px-2 pb-2">
+                        <h4 class="cursive text-2xl text-red-500">Pokhara Memories 🥰🥰</h4>
+                        <p class="text-xs text-gray-500 mt-1">🤭🥰😍❤️</p>
+                    </div>
+                </div>
+                <div class="bg-white p-3 shadow-xl transform rotate-1 hover:rotate-0 transition-all duration-300 border border-gray-100 h-full">
+                    <div class="bg-gray-50 mb-3 overflow-hidden rounded-sm flex items-center justify-center">
+                        <img src="photos/seventh_photo.jpg" 
+                            alt="Memory" 
+                            class="w-full h-auto max-h-[450px] object-contain shadow-inner">
+                    </div>
+                    <div class="px-2 pb-2">
+                        <h4 class="cursive text-2xl text-red-500">Pokhara Memories 🥰🥰</h4>
+                        <p class="text-xs text-gray-500 mt-1">AHHH!! Take me Back to Pokhara. 🥺🥺😍❤️</p>
+                    </div>
+                </div>
+
+
+
+                
+
+                </div>
+
+            <button onclick="backToStart()" class="mt-8 text-gray-400 text-sm hover:text-red-400 transition-colors uppercase tracking-widest">
+                ← Back to Home
+            </button>
+        </div>
+            <div id="gift-reveal" class="hidden animate__animated">
+                <div class="py-8">
+                    <div id="reveal-icon" class="text-7xl mb-4"></div>
+                    <h3 id="reveal-title" class="cursive text-4xl text-red-600 mb-2"></h3>
+                    <p id="reveal-description" class="text-gray-600 mb-8 italic"></p>
+                    
+                    <button onclick="backToGifts()" class="text-red-500 font-semibold flex items-center justify-center w-full hover:underline">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Back to other gifts
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Create Floating Background Hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            document.getElementById('heart-container').appendChild(heart);
+            
+            setTimeout(() => { heart.remove(); }, 6000);
+        }
+        setInterval(createHeart, 400);
+
+        function nextStep(step) {
+            // Hide all steps
+            document.getElementById('step-1').classList.add('hidden');
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('step-4').classList.add('hidden');
+
+            // Show the requested step
+            const target = document.getElementById('step-' + step);
+            target.classList.remove('hidden');
+            target.classList.add('animate__animated', 'animate__fadeInUp');
+
+            // Expand card for Step 3 or Step 4
+            if (step === 4) {
+                const card = document.getElementById('main-card');
+                card.style.maxWidth = '700px';
+                card.style.transition = 'max-width 0.5s ease-in-out';
+            }
+        }
+
+        function backToStart() {
+            const card = document.getElementById('main-card');
+            card.style.maxWidth = '448px'; // Reset to original max-w-md
+            
+            document.getElementById('step-4').classList.add('hidden');
+            document.getElementById('step-1').classList.remove('hidden');
+            document.getElementById('step-1').classList.add('animate__animated', 'animate__fadeIn');
+        }
+
+        function moveButton() {
+            const btn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            
+            btn.style.position = 'absolute';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        function celebrate() {
+            // 1. Trigger the Confetti
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff0000', '#ff85a1', '#ffffff']
+            });
+
+            // 2. WIDEN THE CARD to 700px
+            const card = document.getElementById('main-card');
+            card.style.maxWidth = '700px'; 
+            card.style.transition = 'max-width 0.5s ease-in-out'; // Smooth expansion
+
+            // 3. Switch Steps
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('step-3').classList.remove('hidden');
+            document.getElementById('step-3').classList.add('animate__animated', 'animate__zoomIn');
+        }
+
+        function showGift(gift) {
+            const msg = document.getElementById('gift-message');
+            msg.innerText = `Excellent choice! ${gift} it is! ❤️`;
+            msg.classList.remove('hidden');
+            msg.classList.add('animate__animated', 'animate__fadeIn');
+        }
+
+
+        const giftDetails = {
+            1: { title: "A Promise", icon: "🕯️", desc: "Baby! I promise you that you will always have my heart. ❤️ And I will Love you ALWAYS!! No matter what. ❤️ I Love You Maya ❤️❤️" },
+            2: { title: "A Movie Date", icon: "🍿", desc: "Let's Go Grab a Popcorn, Watch Some Movie. ❤️❤️" },
+            3: { title: "Gift?", icon: "🧖‍♀️", desc: "What gift are you looking for? Am I not enough. 🤭🤭😘💋" },
+            4: { title: "Indoor Getaway", icon: "✈️", desc: "An escape to somewhere peaceful, with only us. We will have so much fun together. ❤️❤️" },
+            5: { title: "SHH!! It's A Secret Gift. ", icon: "🤫", desc: "I have a Secret Gift for You. You can receive it when we meet. ❤️❤️" }
+        };
+
+        function openGift(id) {
+            const gift = giftDetails[id];
+            const selection = document.getElementById('gift-selection');
+            const reveal = document.getElementById('gift-reveal');
+            
+            // Set content
+            document.getElementById('reveal-icon').innerText = gift.icon;
+            document.getElementById('reveal-title').innerText = gift.title;
+            document.getElementById('reveal-description').innerText = gift.desc;
+            
+            // Animate transition
+            selection.classList.add('hidden');
+            reveal.classList.remove('hidden');
+            reveal.classList.add('animate__zoomIn');
+            
+            // Extra confetti for the gift opening!
+            confetti({
+                particleCount: 40,
+                scalar: 0.7,
+                colors: ['#feb2b2', '#f56565']
+            });
+        }
+
+        function backToGifts() {
+            const selection = document.getElementById('gift-selection');
+            const reveal = document.getElementById('gift-reveal');
+            
+            reveal.classList.add('hidden');
+            selection.classList.remove('hidden');
+            selection.classList.add('animate__fadeIn');
+        }
+
+        const names = ["Maya", "Mayalu", "Babe", "Baby", "Sanu", "Babes"];
+        let nameIndex = 0;
+
+        function cycleNames() {
+            const display = document.getElementById('nickname-display');
+            
+            // Smooth transition: Fade out, change text, fade in
+            display.classList.remove('animate__bounceIn');
+            display.classList.add('animate__fadeOut');
+            
+            setTimeout(() => {
+                nameIndex = (nameIndex + 1) % names.length;
+                display.innerText = names[nameIndex];
+                display.classList.remove('animate__fadeOut');
+                display.classList.add('animate__fadeIn');
+            }, 500);
+        }
+
+        // Change the name every 2.5 seconds
+        setInterval(cycleNames, 2500);
+    </script>
+</body>
+</html>
